@@ -117,8 +117,6 @@ function App() {
                 <footer className="footer">
                     <i className="fa-solid fa-heart"></i>
                     Catálogo de Usuários
-                    <span>•</span>
-                    Desenvolvido com carinho
                 </footer>
 
             </main>
