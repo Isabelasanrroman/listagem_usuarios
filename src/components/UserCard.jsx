@@ -1,6 +1,6 @@
 import React from "react";
 
-function UserCard({ usuario }) {
+function UserCard({ usuario, onSelecionarUsuario }) {
     return (
         <li className="usuario-card">
 
@@ -23,6 +23,15 @@ function UserCard({ usuario }) {
             <div className="card-arrow">
                 <i className="fa-solid fa-chevron-right"></i>
             </div>
+
+            <button
+                className="botao-detalhes"
+                onClick={() => {
+                    onSelecionarUsuario(usuario.id)
+                }}
+            >
+                Ver detalhes
+            </button>
 
         </li>
     );
