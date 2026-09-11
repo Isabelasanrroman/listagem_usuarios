@@ -9,7 +9,7 @@ function MensagemErro({ mensagem }) {
             </div>
 
             <div>
-                <strong>Ops! Ocorreu um erro.</strong>
+                <strong>Ocorreu um erro.</strong>
                 <p>{mensagem}</p>
             </div>
 

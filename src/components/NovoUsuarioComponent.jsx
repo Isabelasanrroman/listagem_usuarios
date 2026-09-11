@@ -36,6 +36,11 @@ function NovoUsuarioComponent({ novoUsuario }) {
                     {novoUsuario.email}
                 </p>
 
+                <p>
+                    <strong>Telefone</strong>
+                    {novoUsuario.phone}
+                </p>
+
             </div>
 
         </div>

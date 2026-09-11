@@ -80,30 +80,39 @@ function App() {
         setUsuarioSelecionado(null);
     }
 
+    
     async function cadastrarUsuario(usuario) {
-    try {
-        const response = await axios.post(
-            `${url}/users`, usuario
-        );
 
-        const data = response.data;
+        if (
+            !usuario.name.trim() ||
+            !usuario.username.trim() ||
+            !usuario.email.trim() ||
+            !usuario.phone.trim()
+        ) {
 
-        setNovoUsuario(data);
+            setMensagemSucesso(null);
+            setMensagemErro(
+                "Preencha todos os campos antes de cadastrar o usuário."
+            );
+            return;
+        }
+        try {
+            const response = await axios.post(
+                `${url}/users`, usuario
+            );
 
-        setMensagemErro(null);
-
-        setMensagemSucesso("Usuário cadastrado com sucesso!");
-
-    } catch (error) {
-        console.log("Erro cadastrar usuário: ", error);
-
-        setMensagemSucesso(null);
-
-        setMensagemErro(
-            "Não foi possível cadastrar o usuário."
-        );
+            const data = response.data;
+            setNovoUsuario(data);
+            setMensagemErro(null);
+            setMensagemSucesso("Usuário cadastrado com sucesso!");
+        } catch (error) {
+            console.log("Erro cadastrar usuário: ", error);
+            setMensagemSucesso(null);
+            setMensagemErro(
+                "Não foi possível cadastrar o usuário."
+            );
+        }
     }
-}
 
     useEffect(() => {
         buscarUsuarios();
