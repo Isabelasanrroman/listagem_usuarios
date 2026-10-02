@@ -9,7 +9,6 @@ import UserListComponent from "./components/UserListComponent";
 import "./App.css";
 import UserDetailsComponent from "./components/UserDetailsComponent";
 import UserForm from "./components/UserForm";
-import NovoUsuarioComponent from "./components/NovoUsuarioComponent";
 import MensagemSucesso from "./components/MensagemSucesso";
 import MensagemErro from "./components/MensagemErro";
 
@@ -33,21 +32,19 @@ function App() {
     const [carregando, setCarregando] = useState(true);
     const [busca, setBusca] = useState("");
     const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
-    const [novoUsuario, setNovoUsuario] = useState(null)
+    const [mostrarCadastro, setMostrarCadastro] = useState(false)
 
     const usuariosFiltrados = usuarios.filter(
         filtrarUsuarioPorTempo(busca)
     );
 
     async function buscarUsuario(id) {
-        try {
-            const response = await axios.get(
-                `${url}/users/${id}`
-            )
-            const data = response.data
-            setUsuarioSelecionado(data)
-        } catch (error) {
-            console.log("Erro ao buscar usuário: ", error)
+        const usuarioEncontrado = usuarios.find(
+            (usuario) => usuario.id === id
+        );
+
+        if (usuarioEncontrado) {
+            setUsuarioSelecionado(usuarioEncontrado);
         }
     }
 
@@ -80,6 +77,12 @@ function App() {
         setUsuarioSelecionado(null);
     }
 
+    function excluirUsuario(id) {
+        setUsuarios((usuariosAtuais) =>
+        usuariosAtuais.filter((usuario) => usuario.id !== id)
+        );
+    }
+
     
     async function cadastrarUsuario(usuario) {
 
@@ -102,9 +105,13 @@ function App() {
             );
 
             const data = response.data;
-            setNovoUsuario(data);
+            setUsuarios((usuariosAtuais) => [
+                ...usuariosAtuais,
+                data
+            ]);
             setMensagemErro(null);
             setMensagemSucesso("Usuário cadastrado com sucesso!");
+
         } catch (error) {
             console.log("Erro cadastrar usuário: ", error);
             setMensagemSucesso(null);
@@ -150,10 +157,30 @@ function App() {
                             {usuariosFiltrados.length} usuario(s) encontrado(s)
                         </p>
 
+                        <div className="area-cadastro">
+                            <button
+                                className="botao-abrir-cadastro"
+                                onClick={() => setMostrarCadastro(true)}
+                            >
+                                <i className="fa-solid fa-user-plus"></i>
+                                    Cadastrar Usuários
+                                <span>+</span>
+                            </button>
+                        </div>
+
+                        {mensagemSucesso && (
+                            <MensagemSucesso mensagem={mensagemSucesso} />
+                        )}
+
+                        {mensagemErro && (
+                            <MensagemErro mensagem={mensagemErro} />
+                        )}
+
                         {usuariosFiltrados.length > 0 ? (
-                            <UserListComponent
-                                usuarios={usuariosFiltrados}
+                            <UserListComponent  
+                                usuarios={usuariosFiltrados}  
                                 onSelecionarUsuario={buscarUsuario}
+                                onExcluirUsuario={excluirUsuario}
                             />
                         ) : (
                             <div className="empty-message">
@@ -176,21 +203,30 @@ function App() {
                                 onFecharDetalhes={limparDetalhesUsuario}
                             />
                         )}
-                        <UserForm onCadastrar={cadastrarUsuario}/>
-
-                        {mensagemSucesso && (
-                            <MensagemSucesso mensagem={mensagemSucesso} />
-                        )}
-
-                        {mensagemErro && (
-                            <MensagemErro mensagem={mensagemErro} />
-                        )}
-
-                        {novoUsuario && (
-                            <NovoUsuarioComponent novoUsuario={novoUsuario}/>
-                        )}
 
                     </>
+                )}
+
+                {mostrarCadastro && (
+                    <div className="modal-overlay modal-cadastro-overlay">
+                        <div className="modal-cadastro">
+
+                            <button
+                                className="fechar-cadastro"
+                                onClick={() => setMostrarCadastro(false)}
+                            >
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+
+                            <UserForm
+                                onCadastrar={(usuario) => {
+                                    cadastrarUsuario(usuario);
+                                    setMostrarCadastro(false);
+                                }}
+                            />
+
+                        </div>
+                    </div>
                 )}
 
                 <footer className="footer">

@@ -1,7 +1,7 @@
 import React from "react";
 import UserCard from "./UserCard";
 
-function UserListComponent({ usuarios, onSelecionarUsuario }) {
+function UserListComponent({ usuarios, onSelecionarUsuario, onExcluirUsuario }) {
     return (
         <ul className="lista-usuarios">
 
@@ -10,6 +10,7 @@ function UserListComponent({ usuarios, onSelecionarUsuario }) {
                     key={usuario.id}
                     usuario={usuario}
                     onSelecionarUsuario={onSelecionarUsuario}
+                    onExcluirUsuario={onExcluirUsuario}
                 />
             ))}
 

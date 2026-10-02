@@ -9,18 +9,15 @@ function UserForm({ onCadastrar }) {
 
     function handleSubmit(evento) {
 
-        evento.preventDefault();
+    evento.preventDefault();
 
-        const novoUsuario = {
-            name: nome,
-            username: username,
-            email: email,
-            phone: telefone,
-        };
-
+    const novoUsuario = {
+        name: nome,
+        username: username,
+        email: email,
+        phone: telefone,
+    };
         onCadastrar(novoUsuario);
-
-        limparformulario();
     }
 
     function limparformulario() {

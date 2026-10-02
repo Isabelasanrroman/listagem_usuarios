@@ -1,6 +1,6 @@
 import React from "react";
 
-function UserCard({ usuario, onSelecionarUsuario }) {
+function UserCard({ usuario, onSelecionarUsuario, onExcluirUsuario }) {
     return (
         <li className="usuario-card">
 
@@ -31,6 +31,16 @@ function UserCard({ usuario, onSelecionarUsuario }) {
                 }}
             >
                 Ver detalhes
+            </button>
+
+            <button
+                className="botao-excluir"
+                onClick={() => {
+                    onExcluirUsuario(usuario.id)
+                }}
+            >
+                <i className="fa-solid fa-trash"></i>
+                Excluir
             </button>
 
         </li>
